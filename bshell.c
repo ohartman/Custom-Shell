@@ -3,7 +3,7 @@
   searching the directories in the PATH environment variable.
   Specified executable are run in a child process.
 
-  AUTHOR: PUT YOUR NAME HERE
+  AUTHOR: Owen Hartman
 */
 
 #include "bshell.h"
