@@ -36,7 +36,6 @@ int parsePath(char *dirs[]) {
   	char *nextcharptr; /* point to next char in thePath */
   	for (i = 0; i < MAX_PATHS; i++) dirs[i] = NULL;
   	pathEnv = (char *) getenv("PATH");
-  	//printf("%s\n", pathEnv);
   	if (pathEnv == NULL) return 0; /* No path var. That's ok.*/
 
   	/* for safety copy from pathEnv into thePath */
@@ -46,22 +45,11 @@ int parsePath(char *dirs[]) {
 #ifdef DEBUG
   	printf("Path: %s\n",thePath);
 #endif
-
-  /* Now parse thePath */
   	nextcharptr = thePath;
-
-  /* 
-     Find all substrings delimited by DELIM.  Make a dir element
-     point to each substring.
-     TODO: approx a dozen lines.
-  */
-
-
   	char *token;
   	token = strtok(thePath, DELIM);
   	numDirs = 0;
   	while(token != NULL){
-		//printf("%s\n", token);
 		dirs[numDirs] = (char *) malloc(sizeof(token));
 		dirs[numDirs++] = token;
  		token = strtok(NULL, DELIM); 
@@ -182,7 +170,8 @@ int main(int argc, char *argv[]) {
 	int wdir = 0;
 	char* workingdir = (char*)malloc(sizeof(char)*1000);
   	numPaths = parsePath(dirs);
-  	// TODO
+    
+  	// while loop begins the terminal i/o loop ends when user inputs either 'exit' or 'ctrl+c'
   	while(1){
 		int elsecheck = 0;
 		int check = 0;
@@ -219,8 +208,6 @@ int main(int argc, char *argv[]) {
 				}
 				
 				if(pid == 0){
-					
-					printf("success");
 					printf("%s", fullpath);
 					printf("%ld", getpid());
 					printf("\n");
@@ -231,19 +218,12 @@ int main(int argc, char *argv[]) {
 				else{
 					if(check == 0){
 						ww = waitpid(pid, &status, WNOHANG);
-						printf("success2");
 					}
 					else{
-						printf("success1");
 						printf("%ld", getpid());
 						printf("\n");
 					}
 				}
-				//free(fullpath);
-				//free(cmd);
-				//free(cmd->argv[]);
-                //free(cmd->argc);
-                //free(workingdir);
 			}	
 		}
 		wdir++;
