@@ -1,10 +1,4 @@
-/*
-  Implements a minimal shell.  The shell simply finds executables by
-  searching the directories in the PATH environment variable.
-  Specified executable are run in a child process.
-
-  AUTHOR: Owen Hartman
-*/
+//  AUTHOR: Owen Hartman
 
 #include "bshell.h"
 #include <unistd.h>
@@ -18,16 +12,7 @@ int parsePath(char *dirs[]);
 char *lookupPath(char *fname, char **dir,int num);
 int parseCmd(char *cmdLine, Command *cmd);
 
-/*
-  Read PATH environment var and create an array of dirs specified by PATH.
 
-  PRE: dirs allocated to hold MAX_ARGS pointers.
-  POST: dirs contains null-terminated list of directories.
-  RETURN: number of directories.
-
-  NOTE: Caller must free dirs[0] when no longer needed.
-
-*/
 int parsePath(char *dirs[]) {
   	int i, numDirs;
   	char *pathEnv;
@@ -55,7 +40,6 @@ int parsePath(char *dirs[]) {
  		token = strtok(NULL, DELIM); 
  	}
 
-  /* Print all dirs */
 #ifdef DEBUG
   	for (i = 0; i < numDirs; i++) {
     		printf("%s\n",dirs[i]);
@@ -64,22 +48,6 @@ int parsePath(char *dirs[]) {
     
   	return numDirs;
 }
-
-
-/*
-  Search directories in dir to see if fname appears there.  This
-  procedure is correct!
-
-  PRE dir is valid array of directories
-  PARAMS
-   fname: file name
-   dir: array of directories
-   num: number of directories.  Must be >= 0.
-
-  RETURNS full path to file name if found.  Otherwise, return NULL.
-
-  NOTE: Caller must free returned pointer.
-*/
 
 char *lookupPath(char *fname, char **dir,int num) {
   	char *fullName; // resultant name
@@ -95,7 +63,6 @@ char *lookupPath(char *fname, char **dir,int num) {
     }
   }
 
-  /* Look in directories of PATH.  Use access() to find file there. */
   else {
     	for (i = 0; i < num; i++) {
       		// create fullName
@@ -116,19 +83,6 @@ char *lookupPath(char *fname, char **dir,int num) {
   	return NULL;
 }
 
-/*
-  Parse command line and fill the cmd structure.
-
-  PRE 
-   cmdLine contains valid string to parse.
-   cmd points to valid struct.
-  PST 
-   cmd filled, null terminated.
-  RETURNS arg count
-
-  Note: caller must free cmd->argv[0..argc]
-
-*/
 int parseCmd(char *cmdLine, Command *cmd) {
   	int argc = 0; // arg count
   	char* token;
